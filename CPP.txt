@@ -1,0 +1,27 @@
+#include <iostream>
+#include <regex>
+#include <string>
+
+int main() {
+    // Sample text to inspect
+    std::string text = "My email is example@example.com. Feel free to contact me.";
+
+    // Regular expression to detect email addresses (simple pattern)
+    std::regex email_pattern(R"(([\w\.-]+)@([\w\.-]+)\.([a-zA-Z]{2,6}))");
+
+    std::smatch matches;
+    bool found = false;
+
+    std::string::const_iterator search_start(text.cbegin());
+    while (std::regex_search(search_start, text.cend(), matches, email_pattern)) {
+        std::cout << "Found email: " << matches[0] << std::endl;
+        found = true;
+        search_start = matches.suffix().first;  // Continue search after this match
+    }
+
+    if (!found) {
+        std::cout << "No email addresses found." << std::endl;
+    }
+
+    return 0;
+}
